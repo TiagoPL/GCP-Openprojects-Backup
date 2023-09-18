@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-projects-bkp
+  namespace: openproject
+  labels:
+    app: projects-bkp
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - api.domain.com.br
+    secretName: tls-4linux
+  rules:
+  - host: api.domain.com.br
+    http:
+      paths:
+      - path: /projects-bkp(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-projects-bkp
+            port:
+              number: 5000
